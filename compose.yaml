@@ -1,0 +1,43 @@
+name: transformer-course
+services:
+  course:
+    build:
+      context: .
+      dockerfile: docker/course.Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./course:/app/course:ro
+      - ./web:/app/web:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/course')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+  lab:
+    build:
+      context: .
+      dockerfile: docker/lab.Dockerfile
+    profiles: ["lab"]
+    working_dir: /app
+    volumes:
+      - ./labs:/app/labs:ro
+      - ./data:/app/data:ro
+      - ./runs:/app/runs
+    environment:
+      PYTHONUNBUFFERED: "1"
+      OMP_NUM_THREADS: "2"
+    command: ["python", "-m", "labs.experiments", "--help"]
+  qa:
+    build:
+      context: .
+      dockerfile: docker/qa.Dockerfile
+    profiles: ["qa"]
+    depends_on:
+      course:
+        condition: service_healthy
+    volumes:
+      - ./qa:/app/qa:ro
+      - ./runs:/app/artifacts
+    command: ["node", "qa/browser.cjs"]

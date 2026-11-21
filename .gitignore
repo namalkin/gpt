@@ -1,0 +1,17 @@
+runs/*
+!runs/.gitkeep
+__pycache__/
+*.pyc
+.deploy/
+.env
+.env.*
+!.env.example
+.ssh/
+.aws/
+.codex/
+.agents/
+# Host-specific operations stay on the owner's PC and server.
+/deploy/README.md
+/deploy/prepare-remote.sh
+/deploy/activate-remote.sh
+/deploy/rollback-remote.sh

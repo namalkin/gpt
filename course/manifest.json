@@ -1,0 +1,30 @@
+{
+  "title": "Трансформер с нуля",
+  "modules": ["Начальная точка", "Математический язык", "Как учится модель", "Изобретая трансформер", "Собственный GPT", "Современные системы"],
+  "lessons": [
+    {"id":"start","module":0,"title":"Маршрут и рабочая лаборатория","time":"45–60 мин","file":"00-start.md"},
+    {"id":"problem","module":0,"title":"Как превратить текст в задачу","time":"60–90 мин","file":"01-problem.md"},
+    {"id":"python","module":0,"title":"Python и тензоры без магии","time":"90–120 мин","file":"02-python.md"},
+    {"id":"vectors","module":1,"title":"Векторы, сходство и проекции","time":"90–120 мин","file":"03-vectors.md"},
+    {"id":"matrices","module":1,"title":"Матрицы и размерности","time":"90–120 мин","file":"04-matrices.md"},
+    {"id":"probability","module":1,"title":"Вероятность, softmax и энтропия","time":"90–120 мин","file":"05-probability.md"},
+    {"id":"derivatives","module":1,"title":"Производная и цепное правило","time":"120–150 мин","file":"06-derivatives.md"},
+    {"id":"backprop","module":2,"title":"Градиент и обратное распространение","time":"120–150 мин","file":"07-backprop.md"},
+    {"id":"network","module":2,"title":"Нейронная сеть и нелинейность","time":"90–120 мин","file":"08-network.md"},
+    {"id":"optimization","module":2,"title":"Обучение, Adam и проверка знаний","time":"120–150 мин","file":"09-optimization.md"},
+    {"id":"tokens","module":3,"title":"Токены и обучаемые представления","time":"90–120 мин","file":"10-tokens.md"},
+    {"id":"invention","module":3,"title":"Как самостоятельно прийти к attention","time":"90–120 мин","file":"11-invention.md"},
+    {"id":"attention","module":3,"title":"Attention: весь расчёт на бумаге","time":"120–150 мин","file":"12-attention.md"},
+    {"id":"multihead","module":3,"title":"Несколько голов и причинная маска","time":"90–120 мин","file":"13-multihead.md"},
+    {"id":"positions","module":3,"title":"Порядок слов и RoPE","time":"120–150 мин","file":"14-positions.md"},
+    {"id":"block","module":3,"title":"Сборка блока: residual, norm, MLP","time":"120–150 мин","file":"15-block.md"},
+    {"id":"gpt","module":4,"title":"От блока до GPT: формы и параметры","time":"120–150 мин","file":"16-gpt.md"},
+    {"id":"training","module":4,"title":"Обучаем свою языковую модель","time":"150–180 мин","file":"17-training.md"},
+    {"id":"inference","module":4,"title":"Генерация, temperature и KV cache","time":"120–150 мин","file":"18-inference.md"},
+    {"id":"compute","module":5,"title":"Почему нужны параллельные вычисления","time":"120–150 мин","file":"19-compute.md"},
+    {"id":"systems","module":5,"title":"Память, GPU и распределённое обучение","time":"120–150 мин","file":"20-systems.md"},
+    {"id":"modern","module":5,"title":"Современные модели: MoE, MLA, post-training","time":"150–180 мин","file":"21-modern.md"},
+    {"id":"design","module":5,"title":"Спроектировать модель с чистого листа","time":"180–240 мин","file":"22-design.md"},
+    {"id":"reference","module":5,"title":"Справочник, ответы и первоисточники","time":"По необходимости","file":"23-reference.md"}
+  ]
+}
