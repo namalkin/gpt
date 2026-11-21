@@ -66,6 +66,7 @@ function lesson(id) {
     <div><div class="lesson-picker"><label for="mobile-lesson">Перейти к уроку</label><select id="mobile-lesson">${course.lessons.map(l => `<option value="${l.id}" ${l.id === id ? 'selected' : ''}>${l.module + 1}. ${l.title}</option>`).join('')}</select></div>
     <div class="reading-area"><div class="lesson-meta"><span>МОДУЛЬ ${item.module + 1} / УРОК ${index + 1}</span><span>${item.time}</span><button class="print-button" id="print" type="button">Печать / PDF</button></div><article class="article">${item.html}</article>
     <div class="reader-actions"><button class="button ${completed.has(id) ? '' : 'primary'}" id="complete" type="button">${completed.has(id) ? '✓ Освоен · снять отметку' : 'Урок освоен'}</button><div class="actions">${index ? `<a class="button" href="#lesson/${course.lessons[index - 1].id}">Предыдущий</a>` : ''}${index < course.lessons.length - 1 ? `<a class="button" href="#lesson/${course.lessons[index + 1].id}">Следующий урок</a>` : '<a class="button" href="#home">К маршруту</a>'}</div></div></div></div></div>`;
+  enhanceLesson(document.querySelector('.reading-area'));
   document.querySelector('#search').addEventListener('input', event => document.querySelector('#lesson-list').innerHTML = sidebar(event.target.value, id));
   document.querySelector('#mobile-lesson').addEventListener('change', event => location.hash = `lesson/${event.target.value}`);
   document.querySelector('#print').addEventListener('click', () => window.print());

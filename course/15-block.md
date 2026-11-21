@@ -2,9 +2,11 @@
 
 Attention смешивает информацию между позициями, MLP преобразует признаки каждой позиции. Чтобы много таких блоков можно было обучать, нужны удобные пути передачи сигнала и контролируемые масштабы. Учебная модель использует pre-norm блок:
 
-```text
-U = X + Attention(LayerNorm₁(X))
-Y = U + MLP(LayerNorm₂(U))
+```math
+\begin{aligned}
+U&=X+\operatorname{Attention}(\operatorname{LayerNorm}_1(X))\\
+Y&=U+\operatorname{MLP}(\operatorname{LayerNorm}_2(U))
+\end{aligned}
 ```
 
 У всех слагаемых форма [B,T,D]. Residual connection — прибавление исходного входа к результату преобразования. Блок учит изменение представления, а не обязан с нуля сохранять всё полезное.
@@ -17,11 +19,13 @@ Y = U + MLP(LayerNorm₂(U))
 
 Для x∈ℝᴰ:
 
-```text
-μ = (1/D) Σⱼ xⱼ
-σ² = (1/D) Σⱼ (xⱼ−μ)²
-x̂ⱼ = (xⱼ−μ)/sqrt(σ²+ε)
-LayerNorm(x)ⱼ = γⱼx̂ⱼ + βⱼ
+```math
+\begin{aligned}
+\mu&=\frac1D\sum_{j=1}^{D}x_j\\
+\sigma^2&=\frac1D\sum_{j=1}^{D}(x_j-\mu)^2\\
+\hat x_j&=\frac{x_j-\mu}{\sqrt{\sigma^2+\varepsilon}}\\
+\operatorname{LayerNorm}(x)_j&=\gamma_j\hat x_j+\beta_j
+\end{aligned}
 ```
 
 Статистики считаются отдельно для каждого примера и позиции по последней оси D. Они не смешивают соседние токены и не используют статистику будущих позиций. γ и β — обучаемые векторы длины D. ε защищает от деления на ноль.
@@ -30,8 +34,8 @@ LayerNorm(x)ⱼ = γⱼx̂ⱼ + βⱼ
 
 RMSNorm убирает вычитание среднего:
 
-```text
-RMSNorm(x)ⱼ = γⱼ xⱼ / sqrt((1/D)Σₖxₖ²+ε)
+```math
+\operatorname{RMSNorm}(x)_j=\frac{\gamma_jx_j}{\sqrt{\frac1D\sum_{k=1}^{D}x_k^2+\varepsilon}}
 ```
 
 Это другая операция, а не просто новое название LayerNorm. Обе нормировки широко полезны, но замена меняет поведение модели и требует проверки.
@@ -40,10 +44,12 @@ RMSNorm(x)ⱼ = γⱼ xⱼ / sqrt((1/D)Σₖxₖ²+ε)
 
 В лаборатории MLP имеет ширину F=4D и GELU. Современный gated MLP может выглядеть так:
 
-```text
-MLP(x) = (SiLU(xW_g) ⊙ (xW_u)) W_d
-SiLU(z) = z sigmoid(z)
-sigmoid(z) = 1/(1+exp(−z))
+```math
+\begin{aligned}
+\operatorname{MLP}(x)&=\big(\operatorname{SiLU}(xW_g)\odot(xW_u)\big)W_d\\
+\operatorname{SiLU}(z)&=z\,\operatorname{sigmoid}(z)\\
+\operatorname{sigmoid}(z)&=\frac1{1+e^{-z}}
+\end{aligned}
 ```
 
 Символ ⊙ — покоординатное умножение. Одно преобразование регулирует другое. У gated MLP три матрицы вместо двух; при сравнении бюджетов внутреннюю ширину нужно выбирать заново.

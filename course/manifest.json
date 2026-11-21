@@ -3,7 +3,7 @@
   "modules": ["Начальная точка", "Математический язык", "Как учится модель", "Изобретая трансформер", "Собственный GPT", "Современные системы"],
   "lessons": [
     {"id":"start","module":0,"title":"Маршрут и рабочая лаборатория","time":"45–60 мин","file":"00-start.md"},
-    {"id":"problem","module":0,"title":"Как превратить текст в задачу","time":"60–90 мин","file":"01-problem.md"},
+    {"id":"problem","module":0,"title":"Как читать формулы и вероятности","time":"60–90 мин","file":"01-problem.md"},
     {"id":"python","module":0,"title":"Python и тензоры без магии","time":"90–120 мин","file":"02-python.md"},
     {"id":"vectors","module":1,"title":"Векторы, сходство и проекции","time":"90–120 мин","file":"03-vectors.md"},
     {"id":"matrices","module":1,"title":"Матрицы и размерности","time":"90–120 мин","file":"04-matrices.md"},

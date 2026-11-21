@@ -6,7 +6,7 @@
 | --- | --- |
 | B | число примеров в пакете |
 | T, T_max | текущая и максимальная длина контекста |
-| V | размер словаря; в attention V также принято обозначать матрицу значений — смысл определяется контекстом |
+| $\mathcal{V}$, $v$, $V$ | словарь-множество, один кандидат из словаря и число токенов; в attention матрица V означает значения — определение задаётся отдельно |
 | D, H, d | ширина модели, число голов, ширина головы D/H |
 | L | число слоёв; буква L также может означать loss по контексту формулы |
 | θ, η | все обучаемые параметры и learning rate |
@@ -17,17 +17,18 @@
 
 ## Формулы для восстановления по памяти
 
-```text
-p(текст) = Πₜ p(xₜ | x_<ₜ)
-L = −mean(log p правильных токенов)
-softmax(z)ᵢ = exp(zᵢ−max z)/Σⱼexp(zⱼ−max z)
-∂L/∂zᵢ = pᵢ−1[i=y]      для одного наблюдения
-Attention(Q,K,V) = softmax(QKᵀ/√d + M)V
-pre-norm block:
-  U = X + Attn(LN(X))
-  Y = U + MLP(LN(U))
-шаг SGD: θ ← θ−η∇L
-perplexity = exp(mean NLL)
+```math
+\begin{aligned}
+p(x_1,\ldots,x_t)&=\prod_{i=1}^{t}p(x_i\mid x_{<i})\\
+L&=-\frac1N\sum_{i=1}^{N}\ln p_i\\
+\operatorname{softmax}(z)_i&=\frac{e^{z_i-\max z}}{\sum_j e^{z_j-\max z}}\\
+\frac{\partial L}{\partial z_i}&=p_i-\mathbf1_{i=y}\\
+\operatorname{Attention}(Q,K,V)&=\operatorname{softmax}\left(\frac{QK^{\mathsf T}}{\sqrt d}+M\right)V\\
+U&=X+\operatorname{Attn}(\operatorname{LN}(X))\\
+Y&=U+\operatorname{MLP}(\operatorname{LN}(U))\\
+\theta&\leftarrow\theta-\eta\nabla L\\
+\operatorname{perplexity}&=\exp(L)
+\end{aligned}
 ```
 
 ## Частые ошибки

@@ -6,19 +6,16 @@
 
 Пусть x=2, w=3, b=1, цель y=5. Модель a=wx+b, ошибка L=(a−y)²/2.
 
-```text
-Прямой проход:
-u = wx = 6
-a = u+b = 7
-r = a−y = 2
-L = r²/2 = 2
-
-Обратный проход:
-∂L/∂r = r = 2
-∂L/∂a = 2
-∂L/∂u = 2,  ∂L/∂b = 2
-∂L/∂w = (∂L/∂u)x = 4
-∂L/∂x = (∂L/∂u)w = 6
+```math
+\begin{aligned}
+\text{Прямой проход:}\qquad u&=wx=6\\
+a&=u+b=7\\
+r&=a-y=2,\qquad L=\frac{r^2}{2}=2\\[6pt]
+\text{Обратный проход:}\qquad\frac{\partial L}{\partial r}&=r=2\\
+\frac{\partial L}{\partial a}&=2,\quad\frac{\partial L}{\partial u}=2,\quad\frac{\partial L}{\partial b}=2\\
+\frac{\partial L}{\partial w}&=\frac{\partial L}{\partial u}x=4\\
+\frac{\partial L}{\partial x}&=\frac{\partial L}{\partial u}w=6
+\end{aligned}
 ```
 
 Если один узел используется несколькими ветвями, вклады складываются. Например L=w²+w: градиент 2w+1, потому что w влияет на L двумя путями. Именно поэтому в PyTorch градиенты накапливаются, а перед новым независимым шагом их обнуляют.
@@ -27,10 +24,12 @@ L = r²/2 = 2
 
 Для logits z и правильного класса y:
 
-```text
-L = −z_y + ln Σⱼ exp(zⱼ)
-∂L/∂zᵢ = −1[i=y] + exp(zᵢ)/Σⱼ exp(zⱼ)
-         = pᵢ − 1[i=y]
+```math
+\begin{aligned}
+L&=-z_y+\ln\sum_j e^{z_j}\\
+\frac{\partial L}{\partial z_i}&=-\mathbf{1}_{i=y}+\frac{e^{z_i}}{\sum_j e^{z_j}}\\
+&=p_i-\mathbf{1}_{i=y}
+\end{aligned}
 ```
 
 Индикатор 1[i=y] равен 1 для правильного класса и 0 для остальных. При p=(0,2;0,5;0,3), y=2 в нумерации с единицы градиент равен (0,2;−0,5;0,3). Градиентный шаг повышает правильный logit и понижает остальные. Сумма градиентов 0 — согласуется с тем, что прибавление общей константы к logits не меняет распределение.
@@ -41,11 +40,13 @@ L = −z_y + ln Σⱼ exp(zⱼ)
 
 Пусть Y=XW, ошибка скалярна, G=∂L/∂Y. Тогда:
 
-```text
-X: [N,D], W: [D,K], G: [N,K]
-∂L/∂W = XᵀG: [D,K]
-∂L/∂X = GWᵀ: [N,D]
-Для bias: ∂L/∂b = сумма G по N
+```math
+\begin{gathered}
+X:[N,D],\quad W:[D,K],\quad G:[N,K]\\
+\frac{\partial L}{\partial W}=X^{\mathsf T}G\quad[D,K]\\
+\frac{\partial L}{\partial X}=GW^{\mathsf T}\quad[N,D]\\
+\frac{\partial L}{\partial b_k}=\sum_{i=1}^{N}G_{ik}
+\end{gathered}
 ```
 
 Вывод первого равенства: Yᵢₖ=ΣⱼXᵢⱼWⱼₖ, значит ∂Yᵢₖ/∂Wⱼₖ=Xᵢⱼ. Умножаем на Gᵢₖ и суммируем по всем строкам i. Получается ровно элемент матрицы XᵀG. Проверка форм помогает найти ошибку до запуска.

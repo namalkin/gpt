@@ -17,16 +17,15 @@ ids [B,T]
 
 Учебный GPT: D=64,H=4,L=2,T_max=64,F=4D=256. Входное embedding и выходная матрица раздельны. QKV, выход attention, MLP и lm_head не имеют bias. Каждая LayerNorm имеет γ и β. Это важно для точного подсчёта.
 
-```text
-Token embedding                     VD
-Position embedding                  T_max D
-Один attention                      3D² + D² = 4D²
-Один MLP                            D(4D)+(4D)D = 8D²
-Две LayerNorm в блоке               4D
-L блоков                            L(12D²+4D)
-Финальная LayerNorm                 2D
-Выходная матрица                    DV
-Итого N = 2VD + T_max D + L(12D²+4D) + 2D
+```math
+\begin{aligned}
+N_{\text{token}}&=VD,&N_{\text{position}}&=T_{\max}D\\
+N_{\text{attention}}&=4D^2,&N_{\text{MLP}}&=8D^2\\
+N_{\text{norm/block}}&=4D,&N_{\text{final norm}}&=2D\\
+N_{\text{output}}&=DV\\[4pt]
+N&=2VD+T_{\max}D\\
+&\quad+L(12D^2+4D)+2D
+\end{aligned}
 ```
 
 При V=100 получаем 12 800+4096+2×49 408+128=115 840 параметров. Реальное V определяется корпусом, поэтому программа печатает точное число. Разбиение на головы при фиксированном D число параметров этих матриц не меняет.
