@@ -30,7 +30,7 @@ function enhanceLesson(root) {
   const guide = document.createElement('details');
   guide.className = 'notation-guide';
   guide.innerHTML = `<summary>Как читать обозначения</summary><p>Буквы — имена переменных. Их смысл задаётся перед формулой. Для начального раздела:</p>
-    <dl><dt>$x_i$</dt><dd>токен номер i; нижний индекс — номер, а не умножение</dd>
+    <dl><dt>$x_i$</dt><dd>токен на позиции i</dd>
     <dt>$i$, $t$</dt><dd>i — перебираемый номер, t — длина рассматриваемого текста</dd>
     <dt>$v$, $\\mathcal{V}$</dt><dd>v — один кандидат; каллиграфическая V — весь словарь</dd>
     <dt>$p(A\\mid B)$</dt><dd>вероятность A при условии, что B уже известно</dd>
@@ -50,7 +50,7 @@ function initLogExplorer(root) {
     <label class="field" for="log-probability">Вероятность правильного токена: <output id="log-probability-label">60%</output>
     <input id="log-probability" type="range" min="1" max="100" value="60" step="1"></label>
     <div class="log-output" aria-live="polite"></div><div class="log-chart"></div>
-    <p class="hint">Третье число — вероятность цепочки из трёх правильных токенов, если каждому модель назначила эту условную вероятность. График показывает штраф одного токена при p от 0,01 до 1. В точке p=0 логарифм не определён; при приближении к нулю штраф растёт без границы. Это шкала ошибки, а не процент неверных ответов.</p>`;
+    <p class="hint">Третье число — вероятность цепочки из трёх правильных токенов, если каждому модель назначила эту условную вероятность. График показывает штраф одного токена при p от 0,01 до 1. В точке p=0 логарифм не определён; при приближении к нулю штраф растёт без границы.</p>`;
   const update = () => {
     const p = Number(root.querySelector('input').value) / 100, loss = -Math.log(p);
     root.querySelector('output').textContent = `${Math.round(p*100)}%`;
