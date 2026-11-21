@@ -15,6 +15,16 @@ services:
       interval: 15s
       timeout: 5s
       retries: 3
+  scratch:
+    image: python:3.12.8-slim
+    profiles: ["lab"]
+    working_dir: /app
+    volumes:
+      - ./labs:/app/labs:ro
+    environment:
+      PYTHONUNBUFFERED: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    command: ["python", "-m", "labs.from_scratch"]
   lab:
     build:
       context: .
